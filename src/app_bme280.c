@@ -51,6 +51,5 @@ int8_t app_bme280_handler(const struct device *dev)
     }
 
     printk("temp: %d.%03d; press: %d.%03d\n",temp.val1, temp.val2, hum.val1, hum.val2);
-
     return 0;
 }

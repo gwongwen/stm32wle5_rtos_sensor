@@ -11,7 +11,6 @@
 
 #include "app_bme280.h"
 #include "app_vbat.h"
-#include "app_rom.h"
 
 void sens_work_handler(struct k_work *work_rtc)
 {

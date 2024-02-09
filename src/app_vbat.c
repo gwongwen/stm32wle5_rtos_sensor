@@ -45,6 +45,5 @@ int8_t app_vbat_handler(const struct device *dev)
     }
 
     printk("stm32 vbat: %d.%03d\n", bat.val1, bat.val2);
-
     return 0;
 }
