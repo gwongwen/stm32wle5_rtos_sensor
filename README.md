@@ -5,6 +5,8 @@ This first code allow us to convert a voltage and add processing to it :
 
  - take sample of battery level, temperature and pressure levels
 
+This allows us to test BME280 ennvironmental sensor and the internal battery level ADC of the STM32WLE5xx.
+
 ## Building and Running
 
 The following commands clean build folder, build and flash the sample:
