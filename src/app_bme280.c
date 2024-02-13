@@ -26,7 +26,7 @@ int8_t app_bme280_init(const struct device *dev)
 	} else {
         printk("- found device \"%s\", getting bme280 data\n", dev->name);
     }
-    tph_ind =0;
+    tph_ind = 0;
     (void)nvs_delete(&fs, NVS_BME280_ID);
     return 0;
 }
