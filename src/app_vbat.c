@@ -6,9 +6,13 @@
  */
 
 #include "app_vbat.h"
+#include "app_nvs.h"
+
+int8_t bat_ind;
 
 int8_t app_vbat_init(const struct device *dev)
 {
+    static struct nvs_fs fs;
     dev = DEVICE_DT_GET_ONE(st_stm32_vbat);
 
     if (dev == NULL) {
@@ -19,16 +23,20 @@ int8_t app_vbat_init(const struct device *dev)
     if (!device_is_ready(dev)) {
 		printk("error: stm32 vbat is not ready\n");
 		return 0;
-	}
-
-    printk("found device \"%s\", getting vbat data\n", dev->name);
+	} else {
+        printk("- found device \"%s\", getting vbat data\n", dev->name);
+    }
+    bat_ind =0;
+    (void)nvs_delete(&fs, NVS_STM32_VBAT_ID);
     return 0;
 }
 
 int8_t app_vbat_handler(const struct device *dev)
 {
+    static struct nvs_fs fs;
     struct sensor_value bat;
     int8_t ret = 0;
+    uint16_t val_mil[BAT_BUFFER_SIZE];
 
     dev = DEVICE_DT_GET_ONE(st_stm32_vbat);
 
@@ -43,7 +51,14 @@ int8_t app_vbat_handler(const struct device *dev)
         printk("error: can't read sensor channels\n");
 	    return 0;
     }
-
     printk("stm32 vbat: %d.%03d\n", bat.val1, bat.val2);
+
+    if (bat_ind < BAT_BUFFER_SIZE) {
+        val_mil[bat_ind] = (sensor_value_to_milli(&bat)/10);
+        bat_ind ++;
+    } else {
+        (void)nvs_write(&fs, NVS_STM32_VBAT_ID, &val_mil, sizeof(val_mil));
+        bat_ind =0;
+    }
     return 0;
 }
