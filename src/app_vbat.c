@@ -8,11 +8,8 @@
 #include "app_vbat.h"
 #include "app_nvs.h"
 
-int8_t bat_ind;
-
-int8_t app_vbat_init(const struct device *dev)
+int8_t app_stm32_vbat_init(const struct device *dev)
 {
-    static struct nvs_fs fs;
     dev = DEVICE_DT_GET_ONE(st_stm32_vbat);
 
     if (dev == NULL) {
@@ -26,18 +23,14 @@ int8_t app_vbat_init(const struct device *dev)
 	} else {
         printk("- found device \"%s\", getting vbat data\n", dev->name);
     }
-    bat_ind =0;
-    (void)nvs_delete(&fs, NVS_STM32_VBAT_ID);
     return 0;
 }
 
-int8_t app_vbat_handler(const struct device *dev)
+uint16_t app_stm32_get_vbat(const struct device *dev)
 {
-    static struct nvs_fs fs;
-    struct sensor_value bat;
+    struct sensor_value bat_int32;
+    uint16_t bat_uint16;
     int8_t ret = 0;
-    uint16_t val_wrt[BAT_BUFFER_SIZE];
-    uint16_t val_rd[BAT_BUFFER_SIZE];
 
     dev = DEVICE_DT_GET_ONE(st_stm32_vbat);
 
@@ -47,28 +40,13 @@ int8_t app_vbat_handler(const struct device *dev)
 	    return 0;
     }
 
-	ret = sensor_channel_get(dev, SENSOR_CHAN_VOLTAGE, &bat);
+	ret = sensor_channel_get(dev, SENSOR_CHAN_VOLTAGE, &bat_int32);
     if (ret < 0) {
         printk("error: can't read sensor channels\n");
 	    return 0;
     }
- //   printk("stm32 vbat write: %d.%03d\n", bat.val1, bat.val2);
 
-    if (bat_ind < BAT_BUFFER_SIZE) {
-        val_wrt[bat_ind] = (sensor_value_to_milli(&bat)/10);
-        printk("stm32 vbat: %d\n", val_wrt[bat_ind]);
-        bat_ind ++;
-    } else {
-        (void)nvs_write(&fs, NVS_STM32_VBAT_ID, &val_wrt, sizeof(val_wrt));
-        for (int8_t m; m < BAT_BUFFER_SIZE; m++) {
-            printk("stm32 vbat write: %d\n", val_wrt[m]);
-        }
-        printk("\n\n");
-        (void)nvs_read(&fs, NVS_STM32_VBAT_ID, &val_rd, sizeof(val_rd));
-        for (int8_t n; n < BAT_BUFFER_SIZE; n++) {
-            printk("stm32 vbat read: %d\n", val_rd[n]);
-        }
-        bat_ind =0;
-    }
-    return 0;
+    bat_uint16 = (uint16_t)(bat.val1*100 + bat.val2 / 10000);
+    printk("stm32 vbat: %d\n", bat_uint16);
+    return bat_uint16;
 }
