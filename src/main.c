@@ -11,7 +11,6 @@
 
 #include "app_bme280.h"
 #include "app_vbat.h"
-#include "app_nvs.h"
 
 void sens_work_handler(struct k_work *work_rtc)
 {
@@ -19,9 +18,6 @@ void sens_work_handler(struct k_work *work_rtc)
 	const struct device *bat_dev = NULL;
 
 	printk("sensor handler called\n");
-
-//	app_bme280_handler(bme280_dev);
-	app_vbat_handler(bat_dev);
 
 }
 K_WORK_DEFINE(sens_work, sens_work_handler);
@@ -36,13 +32,15 @@ int main(void)
 {
 	const struct device *bme280_dev = NULL;
 	const struct device *bat_dev = NULL;
+	const struct device *flash_dev = NULL;
 
-	
+	app_bme280_init(bme280_dev);
 	app_stm32_vbat_init(bat_dev);
-
+	app_flash_init(flash_dev);
+	
 	printk("sensor BME280 and Battery Example\nBoard: %s\n", CONFIG_BOARD);
 
-	k_timer_start(&sens_timer, K_MSEC(2000), K_MSEC(2000));
+//	k_timer_start(&sens_timer, K_MSEC(2000), K_MSEC(2000));
 
 	return 0;
 }

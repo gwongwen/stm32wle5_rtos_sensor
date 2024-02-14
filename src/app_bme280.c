@@ -6,18 +6,17 @@
  */
 
 #include "app_bme280.h"
-#include "app_nvs.h"
 
 int8_t app_bme280_init(const struct device *dev)
 {
-    dev = DEVICE_DT_GET_ONE(st_stm32_vbat);
+    dev = DEVICE_DT_GET_ANY(bosch_bme280);
     if (dev == NULL) {
-        printk("error: no stm32 vbat device found\n");
+        printk("error: no bme280 device found\n");
 		return 0;
 	}
 
     if (!device_is_ready(dev)) {
-		printk("error: stm32 vbat is not ready\n");
+		printk("error: bme280 is not ready\n");
 		return 0;
 	} else {
         printk("- found device \"%s\", getting bme280 data\n", dev->name);
@@ -64,7 +63,7 @@ uint16_t app_bme280_get_press(const struct device *dev)
 	    return 0;
     }
 
-	ret = sensor_channel_get(dev, SENSOR_CHAN_AMBIENT_PRESS, &press_int32);
+	ret = sensor_channel_get(dev, SENSOR_CHAN_PRESS, &press_int32);
     if (ret < 0) {
         printk("can't read sensor channels. error: %d\n", ret);
 	    return 0;
@@ -89,7 +88,7 @@ uint16_t app_bme280_get_hum(const struct device *dev)
 	    return 0;
     }
 
-	ret = sensor_channel_get(dev, SENSOR_CHAN_AMBIENT_HUMIDITY, &hum_int32);
+	ret = sensor_channel_get(dev, SENSOR_CHAN_HUMIDITY, &hum_int32);
     if (ret < 0) {
         printk("can't read sensor channels. error: %d\n", ret);
 	    return 0;
