@@ -18,6 +18,7 @@ struct flash_data {
 
 int8_t app_flash_init(const struct device *dev)
 {
+	int8_t ret;
 	dev = FLASH_PARTITION_DEVICE;
 
 	if (dev == NULL) {
@@ -31,5 +32,44 @@ int8_t app_flash_init(const struct device *dev)
 	} else {
         printk("- found device \"%s\", writing/reading data\n", dev->name);
     }
+
+	ret  = flash_erase(dev, FLASH_PARTITION_OFFSET, FLASH_PAGE_SIZE);
+	if (ret) {
+		printk("error erasing flash. error: %d\n", ret);
+	} else {
+		printk("erased all pages\n");
+	}	
 	return 0;
 }
+
+int8_t app_flash_write(const struct device *dev, uint16_t data_wrt)
+{
+	int8_t ret;
+	dev = FLASH_PARTITION_DEVICE;
+
+	ret = flash_write(dev, FLASH_PARTITION_OFFSET, data, sizeof(data_wrt));
+	if (ret) {
+		printk("error writing data. error: %d\n", ret);
+	} else {
+		printk("wrote %zu bytes to address 0x0003f000\n", sizeof(data_wrt));
+	}
+	return 0;
+}
+
+int8_t app_flash_read(const struct device *dev)
+{
+	int8_t ret;
+	dev = FLASH_PARTITION_DEVICE;
+
+	ret = flash_read(dev, FLASH_PARTITION_OFFSET, data, sizeof(data));
+	if (ret) {
+		printk("error reading data.. error: %d\n", ret);
+	} else {
+		printk("read %zu bytes from address 0x0003f000\n", sizeof(data));
+	}
+	for (int8_t i = 0; i < 384; i++) {
+		printk("vbat: %d", data[i].vbat);
+	}
+	return 0;		
+}
+
