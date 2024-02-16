@@ -38,7 +38,7 @@ int main(void)
 	
 	printk("sensor BME280 and Battery Example\nBoard: %s\n", CONFIG_BOARD);
 
-//	k_timer_start(&sens_timer, K_MSEC(2000), K_MSEC(2000));
+	k_timer_start(&sens_timer, K_MSEC(2000), K_MSEC(2000));
 
 	return 0;
 }
