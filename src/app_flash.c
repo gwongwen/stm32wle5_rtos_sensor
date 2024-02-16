@@ -95,7 +95,7 @@ int8_t app_flash_handler(const struct device *dev)
 		isr_ind++;
 	} else {
 		app_flash_write(dev, data);
-		k_sleepK_MSEC(2000);
+		k_sleep(K_MSEC(2000));
 		app_flash_read(dev);
 		isr_ind = 0;
 	}
