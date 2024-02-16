@@ -14,11 +14,9 @@
 
 void sens_work_handler(struct k_work *work_rtc)
 {
-	const struct device *bme280_dev = NULL;
-	const struct device *bat_dev = NULL;
-
+	const struct device *flash_dev = NULL;
 	printk("sensor handler called\n");
-
+	app_flash_handler(flash_dev);
 }
 K_WORK_DEFINE(sens_work, sens_work_handler);
 

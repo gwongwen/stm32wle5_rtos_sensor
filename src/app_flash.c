@@ -14,7 +14,9 @@ struct flash_data {
 	uint16_t temp;
 	uint16_t press;
 	uint16_t hum;
-} data[384];			// 4*48*2 = 384 smples of uint8 (bytes) in each page
+} data[FLASH_BUFFER_SIZE];			// 4*48*2 = 384 smples of uint8 (bytes) in each page
+
+int8_t isr_ind;
 
 int8_t app_flash_init(const struct device *dev)
 {
@@ -38,7 +40,8 @@ int8_t app_flash_init(const struct device *dev)
 		printk("error erasing flash. error: %d\n", ret);
 	} else {
 		printk("erased all pages\n");
-	}	
+	}
+	isr_ind = 0;
 	return 0;
 }
 
@@ -67,9 +70,35 @@ int8_t app_flash_read(const struct device *dev)
 	} else {
 		printk("read %zu bytes from address 0x0003f000\n", sizeof(data));
 	}
-	for (int8_t i = 0; i < 384; i++) {
+	for (int8_t i = 0; i < FLASH_BUFFER_SIZE; i++) {
 		printk("vbat: %d", data[i].vbat);
 	}
 	return 0;		
+}
+
+int8_t app_flash_handler(const struct device *dev)
+{
+	int8_t ret;
+	const struct device *bme_dev;
+	const struct device *bat_dev;
+
+	dev = FLASH_PARTITION_DEVICE;
+	bat_dev = DEVICE_DT_GET_ONE(st_stm32_vbat);
+	bme_dev = dev = DEVICE_DT_GET_ANY(bosch_bme280);
+	uint16_t vbat, temp, press, hum;
+
+	if (isr_ind < FLASH_BUFFER_SIZE) {
+		data->vbat = app_stm32_get_vbat(bat_dev);
+		data->temp = app_bme280_get_temp(bme_dev);
+		data->press = app_bme280_get_press(bme_dev);
+		data->hum = app_bme280_get_hum(bme_dev);
+		isr_ind++;
+	} else {
+		app_flash_write(dev, data);
+		k_sleepK_MSEC(2000);
+		app_flash_read(dev);
+		isr_ind = 0;
+	}
+	return 0;
 }
 
