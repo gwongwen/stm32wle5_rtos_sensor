@@ -14,7 +14,7 @@ struct flash_data {
 	uint16_t temp;
 	uint16_t press;
 	uint16_t hum;
-} data[FLASH_BUFFER_SIZE];			// 4*48*2 = 384 smples of uint8 (bytes) in each page
+} data[FLASH_BUFFER_SIZE];		
 
 int8_t isr_ind;
 
