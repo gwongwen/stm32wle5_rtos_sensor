@@ -8,10 +8,12 @@
 #ifndef APP_STM32_VBAT_H
 #define APP_STM32_VBAT_H
 
+//  ======== includes =============================================
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/sensor.h>
 
+//  ======== prototypes ============================================
 int8_t app_stm32_vbat_init(const struct device *dev);
 uint16_t app_stm32_get_vbat(const struct device *dev);
 
