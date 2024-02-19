@@ -1,9 +1,10 @@
-# Code for 6sens Omnitilt Project : test of STM32 ADC
+# Code for 6sens Omnitilt Project : test of STM32 ADC and BME280 sensor
 
 ## Overview
 This first code allow us to convert a voltage and add processing to it :
 
  - take sample of battery level, temperature and pressure levels
+ - store the different values in an area of partitioned internal memory (4kbytes at the end of flash memory)
 
 This allows us to test BME280 ennvironmental sensor and the internal battery level ADC of the STM32WLE5xx.
 
