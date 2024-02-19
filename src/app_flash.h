@@ -18,7 +18,7 @@
 #define FLASH_PARTITION			storage_partition
 #define FLASH_PARTITION_DEVICE	FIXED_PARTITION_DEVICE(FLASH_PARTITION)
 #define FLASH_PARTITION_OFFSET	FIXED_PARTITION_OFFSET(FLASH_PARTITION)
-#define FLASH_PAGE_SIZE         2048
+#define FLASH_PAGE_SIZE         2048    // 2U 
 #define FLASH_BUFFER_SIZE       4*4     // test: 4 samples of vbat and tph -> 32 bytes
 
 //  ======== prototypes ============================================

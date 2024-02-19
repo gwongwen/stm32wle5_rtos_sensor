@@ -12,6 +12,7 @@
 #include "app_bme280.h"
 #include "app_vbat.h"
 
+//  ======== interrupt sub-routine ===============================
 void sens_work_handler(struct k_work *work_rtc)
 {
 	const struct device *flash_dev = NULL;
@@ -27,18 +28,21 @@ void sens_timer_handler(struct k_timer *rtc_dum)
 }
 K_TIMER_DEFINE(sens_timer, sens_timer_handler, NULL);
 
+//  ======== main ===============================================
 int main(void)
 {
 	const struct device *bme_dev = NULL;
 	const struct device *bat_dev = NULL;
 	const struct device *flash_dev = NULL;
 
+	// setup all devices
 	app_bme280_init(bme_dev);
 	app_stm32_vbat_init(bat_dev);
 	app_flash_init(flash_dev);
 	
 	printk("Sensor BME280 and Battery Example\nBoard: %s\n", CONFIG_BOARD);
 
+	// beginning of interrupt subroutine
 	k_timer_start(&sens_timer, K_MSEC(5000), K_MSEC(5000));
 
 	return 0;
