@@ -26,7 +26,7 @@ int8_t app_stm32_vbat_init(const struct device *dev)
     }
     return 0;
 }
-//  ======== app_stm32_get_vbat ==============================================
+//  ======== app_stm32_get_vbat =============================================
 uint16_t app_stm32_get_vbat(const struct device *dev)
 {
     struct sensor_value bat_int32;

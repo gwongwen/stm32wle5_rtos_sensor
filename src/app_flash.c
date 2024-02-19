@@ -47,7 +47,7 @@ int8_t app_flash_init(const struct device *dev)
 	return 0;
 }
 
-//  ======== app_flash_write ====================================
+//  ======== app_flash_write ===================================
 int8_t app_flash_write(const struct device *dev, uint16_t data_wrt)
 {
 	int8_t ret;
@@ -62,7 +62,7 @@ int8_t app_flash_write(const struct device *dev, uint16_t data_wrt)
 	return 0;
 }
 
-//  ======== app_flash_read =====================================
+//  ======== app_flash_read ===================================
 int8_t app_flash_read(const struct device *dev)
 {
 	int8_t ret;
@@ -80,7 +80,7 @@ int8_t app_flash_read(const struct device *dev)
 	return 0;		
 }
 
-//  ======== app_flash_handler ===================================
+//  ======== app_flash_handler ================================
 int8_t app_flash_handler(const struct device *dev)
 {
 	int8_t ret;

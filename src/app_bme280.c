@@ -26,7 +26,7 @@ int8_t app_bme280_init(const struct device *dev)
     return 0;
 }
 
-//  ======== app_bme280_get_temp ==========================================
+//  ======== app_bme280_get_temp ========================================
 uint16_t app_bme280_get_temp(const struct device *dev)
 {
     struct sensor_value temp_int32;
@@ -56,7 +56,7 @@ uint16_t app_bme280_get_temp(const struct device *dev)
     return temp_uint16;
 }
 
-//  ======== app_bme280_get_press ==========================================
+//  ======== app_bme280_get_press ======================================
 uint16_t app_bme280_get_press(const struct device *dev)
 {
     struct sensor_value press_int32;
@@ -86,7 +86,7 @@ uint16_t app_bme280_get_press(const struct device *dev)
     return press_uint16;
 }
 
-//  ======== app_bme280_get_hum ===========================================
+//  ======== app_bme280_get_hum =========================================
 uint16_t app_bme280_get_hum(const struct device *dev)
 {
     struct sensor_value hum_int32;

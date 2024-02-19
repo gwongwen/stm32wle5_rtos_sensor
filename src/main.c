@@ -8,7 +8,6 @@
 
 #include <zephyr/device.h>
 #include <zephyr/kernel.h>
-
 #include "app_bme280.h"
 #include "app_vbat.h"
 
