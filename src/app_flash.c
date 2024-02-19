@@ -26,7 +26,7 @@ int8_t app_flash_init(const struct device *dev)
 	dev = FLASH_PARTITION_DEVICE;
 
 	if (dev == NULL) {
-        printk("error: no flash device found\n");
+        printk("error: no flash device found\n");sxo9jk
 		return 0;
 	}
 

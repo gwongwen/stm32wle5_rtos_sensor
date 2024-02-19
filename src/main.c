@@ -37,7 +37,7 @@ int main(void)
 	app_stm32_vbat_init(bat_dev);
 	app_flash_init(flash_dev);
 	
-	printk("sensor BME280 and Battery Example\nBoard: %s\n", CONFIG_BOARD);
+	printk("Sensor BME280 and Battery Example\nBoard: %s\n", CONFIG_BOARD);
 
 	k_timer_start(&sens_timer, K_MSEC(5000), K_MSEC(5000));
 
