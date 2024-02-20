@@ -70,7 +70,7 @@ int8_t app_flash_write(const struct device *dev, uint16_t data)
 int8_t app_flash_read(const struct device *dev)
 {
 	int8_t ret;
-	struct flash_data data[FLASH_BUFFER_SIZE];
+	struct flash_data data[FLASH_STRUCT_SIZE];
 	dev = FLASH_PARTITION_DEVICE;
 
 	// reading the first page
@@ -81,7 +81,7 @@ int8_t app_flash_read(const struct device *dev)
 		printk("read %zu bytes from address 0x0003f000\n", sizeof(data));
 	}
 	// printing data
-	for (int8_t i = 0; i < FLASH_BUFFER_SIZE; i++) {
+	for (int8_t i = 0; i < FLASH_STRUCT_SIZE; i++) {
 		printk("vbat: %d, temp: %d, press: %d, hum: %d\n", data[i].vbat, data[i].temp, data[i].press, data[i].hum);
 	}
 	return 0;		
@@ -103,7 +103,7 @@ int8_t app_flash_handler(const struct device *dev)
 	uint16_t vbat, temp, press, hum;
 
 	// putting 5 structures in fisrt page for this test
-	if (ind < 5) {
+	if (ind < FLASH_STRUCT_SIZE) {
 		data[ind].vbat = app_stm32_get_vbat(bat_dev);
 		data[ind].temp = app_bme280_get_temp(bme_dev);
 		data[ind].press = app_bme280_get_press(bme_dev);
