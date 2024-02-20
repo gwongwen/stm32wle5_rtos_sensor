@@ -70,7 +70,7 @@ int8_t app_flash_write(const struct device *dev, uint16_t data)
 int8_t app_flash_read(const struct device *dev)
 {
 	int8_t ret;
-	struct flash_data[FLASH_BUFFER_SIZE] data;
+	struct flash_data data[FLASH_BUFFER_SIZE];
 	dev = FLASH_PARTITION_DEVICE;
 
 	// reading the first page
@@ -91,6 +91,7 @@ int8_t app_flash_read(const struct device *dev)
 int8_t app_flash_handler(const struct device *dev)
 {
 	int8_t ret;
+	struct flash_data data[FLASH_BUFFER_SIZE];
 	const struct device *bme_dev;
 	const struct device *bat_dev;
 
@@ -98,7 +99,7 @@ int8_t app_flash_handler(const struct device *dev)
 	dev = FLASH_PARTITION_DEVICE;
 	bat_dev = DEVICE_DT_GET_ONE(st_stm32_vbat);
 	bme_dev = dev = DEVICE_DT_GET_ANY(bosch_bme280);
-	
+
 	uint16_t vbat, temp, press, hum;
 
 	if (isr_ind < FLASH_BUFFER_SIZE) {
