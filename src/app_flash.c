@@ -15,14 +15,16 @@ struct flash_data {
 	uint16_t temp;
 	uint16_t press;
 	uint16_t hum;
-} data[FLASH_BUFFER_SIZE];		
+};	
 
-int8_t isr_ind;
+int8_t isr_ind;		// declaration of isr index
 
 //  ======== app_flash_init =====================================
 int8_t app_flash_init(const struct device *dev)
 {
 	int8_t ret;
+
+	// getting storage partition in flash memory
 	dev = FLASH_PARTITION_DEVICE;
 
 	if (dev == NULL) {
@@ -37,27 +39,29 @@ int8_t app_flash_init(const struct device *dev)
         printk("- found device \"%s\", writing/reading data\n", dev->name);
     }
 
-	ret  = flash_erase(dev, FLASH_PARTITION_OFFSET, FLASH_PAGE_SIZE);
+	// erasing 2 pages at @0003 F000 (4kbytes at the end of flash memory)
+	ret  = flash_erase(dev, FLASH_PARTITION_OFFSET, 2*FLASH_PAGE_SIZE);
 	if (ret) {
 		printk("error erasing flash. error: %d\n", ret);
 	} else {
 		printk("erased all pages\n");
 	}
-	isr_ind = 0;
+	isr_ind = 0;	// initialisation of isr index
 	return 0;
 }
 
 //  ======== app_flash_write ===================================
-int8_t app_flash_write(const struct device *dev, uint16_t data_wrt)
+int8_t app_flash_write(const struct device *dev, uint16_t data)
 {
 	int8_t ret;
 	dev = FLASH_PARTITION_DEVICE;
 
-	ret = flash_write(dev, FLASH_PARTITION_OFFSET, data, sizeof(data_wrt));
+	// writing data in the first page of 2kbytes
+	ret = flash_write(dev, FLASH_PARTITION_OFFSET, data, sizeof(data));
 	if (ret) {
 		printk("error writing data. error: %d\n", ret);
 	} else {
-		printk("wrote %zu bytes to address 0x0003f000\n", sizeof(data_wrt));
+		printk("wrote %zu bytes to address 0x0003f000\n", sizeof(data));
 	}
 	return 0;
 }
@@ -66,16 +70,19 @@ int8_t app_flash_write(const struct device *dev, uint16_t data_wrt)
 int8_t app_flash_read(const struct device *dev)
 {
 	int8_t ret;
+	struct flash_data[FLASH_BUFFER_SIZE] data;
 	dev = FLASH_PARTITION_DEVICE;
 
+	// reading the first page
 	ret = flash_read(dev, FLASH_PARTITION_OFFSET, data, sizeof(data));
 	if (ret) {
 		printk("error reading data.. error: %d\n", ret);
 	} else {
 		printk("read %zu bytes from address 0x0003f000\n", sizeof(data));
 	}
+	// printing data
 	for (int8_t i = 0; i < FLASH_BUFFER_SIZE; i++) {
-		printk("vbat: %d", data[i].vbat);
+		printk("vbat: %d, temp: %d, press: %d, hum: %d\n", data[i].vbat, data[i].temp, data[i].press, data[i].hum);
 	}
 	return 0;		
 }
@@ -87,9 +94,11 @@ int8_t app_flash_handler(const struct device *dev)
 	const struct device *bme_dev;
 	const struct device *bat_dev;
 
+	// getting all devices
 	dev = FLASH_PARTITION_DEVICE;
 	bat_dev = DEVICE_DT_GET_ONE(st_stm32_vbat);
 	bme_dev = dev = DEVICE_DT_GET_ANY(bosch_bme280);
+	
 	uint16_t vbat, temp, press, hum;
 
 	if (isr_ind < FLASH_BUFFER_SIZE) {
