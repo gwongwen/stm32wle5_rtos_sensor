@@ -17,7 +17,7 @@ struct flash_data {
 	uint16_t hum;
 };	
 
-int8_t isr_ind;		// declaration of isr index
+int8_t ind;		// declaration of isr index
 
 //  ======== app_flash_init =====================================
 int8_t app_flash_init(const struct device *dev)
@@ -46,7 +46,7 @@ int8_t app_flash_init(const struct device *dev)
 	} else {
 		printk("erased all pages\n");
 	}
-	isr_ind = 0;	// initialisation of isr index
+	ind = 0;	// initialisation of isr index
 	return 0;
 }
 
@@ -102,17 +102,18 @@ int8_t app_flash_handler(const struct device *dev)
 
 	uint16_t vbat, temp, press, hum;
 
-	if (isr_ind < FLASH_BUFFER_SIZE) {
-		data->vbat = app_stm32_get_vbat(bat_dev);
-		data->temp = app_bme280_get_temp(bme_dev);
-		data->press = app_bme280_get_press(bme_dev);
-		data->hum = app_bme280_get_hum(bme_dev);
-		isr_ind++;
+	// putting 5 structures in fisrt page for this test
+	if (ind < 5) {
+		data[ind].vbat = app_stm32_get_vbat(bat_dev);
+		data[ind].temp = app_bme280_get_temp(bme_dev);
+		data[ind].press = app_bme280_get_press(bme_dev);
+		data[ind].hum = app_bme280_get_hum(bme_dev);
+		ind++;
 	} else {
 		app_flash_write(dev, data);
 		k_sleep(K_MSEC(2000));
 		app_flash_read(dev);
-		isr_ind = 0;
+		ind = 0;
 	}
 	return 0;
 }
