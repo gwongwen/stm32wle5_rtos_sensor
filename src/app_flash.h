@@ -19,7 +19,7 @@
 #define FLASH_PARTITION_DEVICE	FIXED_PARTITION_DEVICE(FLASH_PARTITION)
 #define FLASH_PARTITION_OFFSET	FIXED_PARTITION_OFFSET(FLASH_PARTITION)
 #define FLASH_PAGE_SIZE         2048    // 2U 
-#define FLASH_BUFFER_SIZE       20     // test: 5*samples of vbat and tph -> 32 bytes
+#define FLASH_BUFFER_SIZE       8       // 1 structure: 4 samples (vbat, temp, press, hum) = 8 bytes
 
 //  ======== prototypes ============================================
 int8_t app_flash_init(const struct device *dev);
