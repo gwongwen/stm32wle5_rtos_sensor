@@ -50,7 +50,8 @@ uint16_t app_bme280_get_temp(const struct device *dev)
 	    return 0;
     }
 
-    // temperature received from channel get - resolution: 0 to 4095 (uint16)
+    // temperature received from channel get
+    // resolution 12 bits: 0 to 4095 (uint16)
 	temp_uint16 = (uint16_t)(temp_int32.val1*100 + temp_int32.val2 / 10000);
     printk("bme280 temp: %d\n", temp_uint16);
     return temp_uint16;
@@ -80,7 +81,8 @@ uint16_t app_bme280_get_press(const struct device *dev)
 	    return 0;
     }
 
-    // pressure received from channel get - resolution: 0 to 4095 (uint16)
+    // pressure received from channel get
+    // resolution 12 bits: 0 to 4095 (uint16)
 	press_uint16 = ((uint16_t)(press_int32.val1*1000 + press_int32.val2 / 10000)) - 5000;
     printk("bme280 pressure: %d\n", press_uint16);
     return press_uint16;
@@ -110,7 +112,8 @@ uint16_t app_bme280_get_hum(const struct device *dev)
 	    return 0;
     }
 
-    // humidity received from channel get - resolution: 0 to 4095 (uint16)
+    // humidity received from channel get
+    // resolution 12 bits: 0 to 4095 (uint16)
 	hum_uint16 = (uint16_t)(hum_int32.val1*100 + hum_int32.val2 / 10000);
     printk("bme280 humidity: %d\n", hum_uint16);
     return hum_uint16;

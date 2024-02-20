@@ -8,7 +8,7 @@
 #ifndef APP_BME280_H
 #define APP_BME280_H
 
-//  ======== includes =============================================
+//  ======== includes ==============================================
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/sensor.h>

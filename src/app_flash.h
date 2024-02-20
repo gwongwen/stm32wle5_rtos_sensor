@@ -8,7 +8,7 @@
 #ifndef APP_FLASH_H
 #define APP_FLASH_H
 
-//  ======== includes =============================================
+//  ======== includes ==============================================
 #include <zephyr/kernel.h>
 #include <zephyr/device.h>
 #include <zephyr/drivers/flash.h>
