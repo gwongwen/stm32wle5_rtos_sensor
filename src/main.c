@@ -42,7 +42,8 @@ int main(void)
 	printk("Sensor BME280 and Battery Example\nBoard: %s\n", CONFIG_BOARD);
 
 	// beginning of interrupt subroutine
-	k_timer_start(&sens_timer, K_MSEC(5000), K_MSEC(5000));
+	k_timer_start(&sens_timer, K_MSEC(5000), K_MSEC(5000));		// for test
+//	k_timer_start(&sens_timer, K_MINUES(30), K_MINUTES(30));	// final code
 
 	return 0;
 }
