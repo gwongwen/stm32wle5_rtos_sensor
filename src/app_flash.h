@@ -20,7 +20,9 @@
 #define FLASH_PARTITION_OFFSET	FIXED_PARTITION_OFFSET(FLASH_PARTITION)
 #define FLASH_PAGE_SIZE         2048    // 2U 
 #define FLASH_BUFFER_SIZE       8       // 1 structure: 4 samples (vbat, temp, press, hum) = 8 bytes
-#define FLASH_STRUCT_SIZE       5       // number of strutures to store
+#define FLASH_STRUCT_SIZE       384     // number of strutures to store: 48 * 4 samples = 384 bytes
+                                        // 4 samples per 30 mins
+
 
 //  ======== prototypes ============================================
 int8_t app_flash_init(const struct device *dev);

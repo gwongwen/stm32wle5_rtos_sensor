@@ -9,7 +9,6 @@ This first code allow us to convert a voltage and add processing to it:
 This allows us to test BME280 ennvironmental sensor and the internal battery level ADC of the STM32WLE5xx. The final goal will be to send the samples to a lorawan server and clear the memory location once a day.
 
 ## Building and Running
-
 The following commands clean build folder, build and flash the sample:
 
 **Command to use**

@@ -57,7 +57,7 @@ uint16_t app_bme280_get_temp(const struct device *dev)
     return temp_uint16;
 }
 
-//  ======== app_bme280_get_press ======================================
+//  ======== app_bme280_get_press =======================================
 uint16_t app_bme280_get_press(const struct device *dev)
 {
     struct sensor_value press_int32;
