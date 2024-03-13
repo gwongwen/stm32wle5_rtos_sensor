@@ -19,9 +19,9 @@
 #define NVS_PARTITION			storage_partition
 #define NVS_PARTITION_DEVICE	FIXED_PARTITION_DEVICE(NVS_PARTITION)
 #define NVS_PARTITION_OFFSET	FIXED_PARTITION_OFFSET(NVS_PARTITION)
-#define NVS_BUFFER_SIZE       2       // 1 structure: 4 samples (vbat, temp, press, hum) = 8 bytes
-                                        // 4 structures for test
-#define SENSOR_ID               1
+#define NVS_BUFFER_SIZE         2       // 1 structure: 4 samples (vbat, temp, press, hum) = 8 bytes
+                                        // 2 structures for test
+#define NVS_SENSOR_ID           1
 
 //  ======== prototypes ============================================
 int8_t app_flash_init(struct nvs_fs *fs);
