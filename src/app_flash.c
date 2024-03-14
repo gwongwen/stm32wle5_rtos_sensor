@@ -72,14 +72,15 @@ int8_t app_flash_init(struct nvs_fs *fs)
 //  ======== app_flash_write ====================================
 int8_t app_flash_write(struct nvs_fs *fs, void *data)
 {	
-	int8_t ret = 0;
+	ssize_t ret;
 
 	// writing data in the first page of 2kbytes
 	ret =  nvs_write(fs, NVS_SENSOR_ID, &data, sizeof(data));
-	if (ret) {
-		printk("error writing data\n");
+	if (ret < 0) {
+		printk ("saved %d to address 0x0003f000\n", ret);
+		
 	} else {
-			printk ("saved %d to address 0x0003f000\n", sizeof(data));
+		printk("error writing data\n");	
 	}
 //	(void)nvs_write(fs, NVS_SENSOR_ID, data, sizeof(data));
 	return 0;
@@ -88,15 +89,15 @@ int8_t app_flash_write(struct nvs_fs *fs, void *data)
 //  ======== app_flash_read =====================================
 int8_t app_flash_read(struct nvs_fs *fs)
 {
-	int8_t ret;
+	ssize_t ret;
 	struct nvs_data data_rd[NVS_BUFFER_SIZE];
 
 	// reading the first page
 	ret = nvs_read(fs, NVS_SENSOR_ID, &data_rd, sizeof(data_rd));
-	if (ret) {
-		printk("error reading data\n");
+	if (ret < 0) {
+		printk("read %zu bytes from address 0x0003f000\n", ret);
 	} else {
-		printk("read %zu bytes from address 0x0003f000\n", sizeof(data_rd));
+		printk("error reading data\n");
 	}
 	// printing data
 	for (int8_t i = 0; i < NVS_BUFFER_SIZE; i++) {
